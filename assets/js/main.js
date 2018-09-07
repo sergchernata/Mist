@@ -21,6 +21,8 @@ window.onload = function() {
     window.onresize = resizeCanvas;
     resizeCanvas();
 
+    createParticles();
+
     function resizeCanvas() {
         canvasWidth = window.innerWidth,
         canvasHeight = window.innerHeight,
@@ -30,12 +32,14 @@ window.onload = function() {
     };
 
     function Particle() {
+        this.fill = Math.random() > 0.5 ? particleColorDark : particleColorLight;
         this.size = Math.floor(Math.random() * 3) + 1  ;
-        this.x = canvasWidth / 2;
-        this.y = canvasHeight / 2;
 
-        this.vx = Math.round(Math.random() * 3) - 1;
-        this.vy = Math.round(Math.random() * 3) - 1;
+        this.x = Math.round(Math.random() * canvas.width);
+        this.y = Math.round(Math.random() * canvas.height);
+
+        this.vx = randomDelta();
+        this.vy = randomDelta();
 
         particleIndex ++;
         particles[particleIndex] = this;
@@ -46,32 +50,38 @@ window.onload = function() {
     Particle.prototype.draw = function() {
         this.x += this.vx;
         this.y += this.vy;
-        //this.vx += Math.round(1*Math.random()-1);
-        //this.vy += Math.round(1*Math.random()-1);
+
+        this.vx += randomDelta();
+        this.vy += randomDelta();
 
         // clear canvas and draw particles
         context.clearRect(settings.leftWall, settings.groundLevel, canvas.width, canvas.height);
         context.beginPath();
-        context.fillStyle=particleColorDark;
+        context.fillStyle = this.fill;
         context.arc(this.x, this.y, this.size, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
 
     }
 
+    function createParticles() {
+        for (var i = 0; i < settings.density; i++) {
+            new Particle();
+        }
+    }
+
     setInterval(function() {
+        // clear canvas
         context.fillStyle = bodyBgColor;
         context.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (var i = 0; i < settings.density; i++) {
-            if (Math.random() > 0.97) {
-                new Particle();
-            }
-        }
-
+        // animate particles by drawing
         for (var i in particles) {
             particles[i].draw();
         }
     }, 30);
+
+    function randomDelta() {
+        return (Math.random() - Math.random()) / 10;
+    }
 
 };

@@ -7,34 +7,35 @@ window.onload = function() {
         particleColorLight = String(styles.getPropertyValue('--particle-color-light')).trim(),
         particleColorDark = String(styles.getPropertyValue('--particle-color-dark')).trim(),
         canvas = document.getElementById("animation"),
+        canvasWidth = window.innerWidth,
+        canvasHeight = window.innerHeight,
         context = canvas.getContext("2d"),
-        posX = 20,
-        posY = canvas.height / 2,
         particles = {},
         particleIndex = 0,
         settings = {
             density: 20,
-            particleSize: 10,
-            startingX: canvas.width / 2,
-            startingY: canvas.height / 4,
-            gravity: 0.5,
-            maxLife: 100
+            particleSizeMin: 1,
+            particleSizeMax: 3,
         };
 
     window.onresize = resizeCanvas;
     resizeCanvas();
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvasWidth = window.innerWidth,
+        canvasHeight = window.innerHeight,
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
     };
 
     function Particle() {
-        this.x = settings.startingX;
-        this.y = settings.startingY;
+        this.size = Math.floor(Math.random() * 3) + 1  ;
+        this.x = canvasWidth / 2;
+        this.y = canvasHeight / 2;
 
-        this.vx = Math.random() * 20 - 10;
-        this.vy = Math.random() * 20 - 5;
+        this.vx = Math.round(Math.random() * 3) - 1;
+        this.vy = Math.round(Math.random() * 3) - 1;
 
         particleIndex ++;
         particles[particleIndex] = this;
@@ -45,18 +46,14 @@ window.onload = function() {
     Particle.prototype.draw = function() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += settings.gravity;
+        //this.vx += Math.round(1*Math.random()-1);
+        //this.vy += Math.round(1*Math.random()-1);
 
-        this.life++;
-
-        if (this.life >= this.maxLife) {
-            delete particles[this.id];
-        }
-
+        // clear canvas and draw particles
         context.clearRect(settings.leftWall, settings.groundLevel, canvas.width, canvas.height);
         context.beginPath();
         context.fillStyle=particleColorDark;
-        context.arc(this.x, this.y, settings.particleSize, 0, Math.PI*2, true);
+        context.arc(this.x, this.y, this.size, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
 

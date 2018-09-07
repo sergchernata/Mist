@@ -12,4 +12,4 @@
 }
 
 body {background: var(--body-bg-color); position: relative;}
-#animation {position: absolute; width: 100vw; height: 100vh;}
+#animation {position: absolute; top: 0; left: 0;}

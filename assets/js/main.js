@@ -1,12 +1,16 @@
 window.onload = function() {
 
-    var canvas = document.getElementById("animation");
-    var context = canvas.getContext("2d");
-
-    var posX = 20,
-        posY = canvas.height / 2;
-
-    var particles = {},
+    var styles = getComputedStyle(document.documentElement),
+        bodyBgColor = String(styles.getPropertyValue('--body-bg-color')).trim(),
+        lineColorLight = String(styles.getPropertyValue('--line-color-light')).trim(),
+        lineColorDark = String(styles.getPropertyValue('--line-color-dark')).trim(),
+        particleColorLight = String(styles.getPropertyValue('--particle-color-light')).trim(),
+        particleColorDark = String(styles.getPropertyValue('--particle-color-dark')).trim(),
+        canvas = document.getElementById("animation"),
+        context = canvas.getContext("2d"),
+        posX = 20,
+        posY = canvas.height / 2,
+        particles = {},
         particleIndex = 0,
         settings = {
             density: 20,
@@ -16,6 +20,14 @@ window.onload = function() {
             gravity: 0.5,
             maxLife: 100
         };
+
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
 
     function Particle() {
         this.x = settings.startingX;
@@ -43,7 +55,7 @@ window.onload = function() {
 
         context.clearRect(settings.leftWall, settings.groundLevel, canvas.width, canvas.height);
         context.beginPath();
-        context.fillStyle="#ffffff";
+        context.fillStyle=particleColorDark;
         context.arc(this.x, this.y, settings.particleSize, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
@@ -51,7 +63,7 @@ window.onload = function() {
     }
 
     setInterval(function() {
-        context.fillStyle = "rgba(10,10,10,0.8)";
+        context.fillStyle = bodyBgColor;
         context.fillRect(0, 0, canvas.width, canvas.height);
 
         for (var i = 0; i < settings.density; i++) {

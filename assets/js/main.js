@@ -54,6 +54,12 @@ window.onload = function() {
         this.vx += randomDelta();
         this.vy += randomDelta();
 
+        // check for boundaries
+        this.vx = this.x < 0 ? this.vx * -1 : this.x > canvas.width ? this.vx * -1 : this.vx;
+        this.vy = this.y < 0 ? this.vy * -1 : this.y > canvas.height ? this.vy * -1 : this.vy;
+        this.x = this.x < 0 ? 0 : this.x > canvas.width ? canvas.width : this.x;
+        this.y = this.y < 0 ? 0 : this.y > canvas.height ? canvas.height : this.y;
+
         // clear canvas and draw particles
         context.clearRect(settings.leftWall, settings.groundLevel, canvas.width, canvas.height);
         context.beginPath();

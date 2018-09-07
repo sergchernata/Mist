@@ -10,8 +10,7 @@ window.onload = function() {
         canvasWidth = window.innerWidth,
         canvasHeight = window.innerHeight,
         context = canvas.getContext("2d"),
-        particles = {},
-        particleIndex = 0,
+        particles = [],
         settings = {
             density: 20,
             particleSizeMin: 1,
@@ -20,20 +19,11 @@ window.onload = function() {
 
     window.onresize = resizeCanvas;
     resizeCanvas();
-
     createParticles();
-
-    function resizeCanvas() {
-        canvasWidth = window.innerWidth,
-        canvasHeight = window.innerHeight,
-
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
-    };
 
     function Particle() {
         this.fill = Math.random() > 0.5 ? particleColorDark : particleColorLight;
-        this.size = Math.floor(Math.random() * 3) + 1  ;
+        this.size = Math.floor(Math.random() * 3) + 1;
 
         this.x = Math.round(Math.random() * canvas.width);
         this.y = Math.round(Math.random() * canvas.height);
@@ -41,16 +31,12 @@ window.onload = function() {
         this.vx = randomDelta();
         this.vy = randomDelta();
 
-        particleIndex ++;
-        particles[particleIndex] = this;
-        this.id = particleIndex;
-        this.life = 0;
+        return this;
     }
 
     Particle.prototype.draw = function() {
         this.x += this.vx;
         this.y += this.vy;
-
         this.vx += randomDelta();
         this.vy += randomDelta();
 
@@ -67,13 +53,6 @@ window.onload = function() {
         context.arc(this.x, this.y, this.size, 0, Math.PI*2, true);
         context.closePath();
         context.fill();
-
-    }
-
-    function createParticles() {
-        for (var i = 0; i < settings.density; i++) {
-            new Particle();
-        }
     }
 
     setInterval(function() {
@@ -85,6 +64,20 @@ window.onload = function() {
             particles[i].draw();
         }
     }, 30);
+
+    function createParticles() {
+        for (var i = 0; i < settings.density; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function resizeCanvas() {
+        canvasWidth = window.innerWidth,
+        canvasHeight = window.innerHeight,
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+    };
 
     function randomDelta() {
         return (Math.random() - Math.random()) / 10;

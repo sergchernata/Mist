@@ -11,5 +11,10 @@
     --nav-text-color-active: #909ca1;
 }
 
-body {background: var(--body-bg-color); position: relative;}
+body {
+    background: var(--body-bg-color);
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
 #animation {position: absolute; top: 0; left: 0;}

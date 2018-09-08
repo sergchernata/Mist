@@ -12,14 +12,21 @@ window.onload = function() {
         context = canvas.getContext("2d"),
         particles = [],
         particleSettings = {
-            density: 20,
+            density: 30,
             particleSizeMin: 1,
             particleSizeMax: 3,
         },
+        shapeSettings = {
+            ampPercentDrift: 20,
+        },
         shapes = [],
+        mouseX = 0,
+        mouseY = 0,
         i = 0;
 
     window.onresize = resizeCanvas;
+    document.onmousemove = handleMouseMove;
+
     resizeCanvas();
     createParticles();
     createShapes();
@@ -37,7 +44,7 @@ window.onload = function() {
         for (var i in particles) {
             particles[i].draw();
         }
-    }, 30);
+    }, 60);
 
     function Particle() {
         this.fill = Math.random() > 0.5 ? particleColorDark : particleColorLight;
@@ -46,17 +53,15 @@ window.onload = function() {
         this.x = Math.round(Math.random() * canvas.width);
         this.y = Math.round(Math.random() * canvas.height);
 
-        this.vx = randomDelta();
-        this.vy = randomDelta();
+        this.angle = randomAngle();
 
         return this;
     }
 
     Particle.prototype.draw = function() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vx += randomDelta();
-        this.vy += randomDelta();
+        this.angle += randomAngle();
+        this.x += (Math.random() * Math.cos(this.angle)) / 2;
+        this.y += (Math.random() * Math.sin(this.angle)) / 2;
 
         // check for boundaries
         this.vx = this.x < 0 ? this.vx * -1 : this.x > canvas.width ? this.vx * -1 : this.vx;
@@ -74,11 +79,12 @@ window.onload = function() {
     }
 
     function Shape(lineColor,radius,amp,sineCount){
-        this.x=0;
-        this.y=100;
-        this.radius=radius;
-        this.amp=amp;
-        this.sineCount=sineCount;
+        this.x = 0;
+        this.y = 100;
+        this.radius = radius;
+        this.amp = amp;
+        this.ampBase = amp;
+        this.sineCount = sineCount;
         this.lineColor = lineColor;
     }
 
@@ -86,7 +92,12 @@ window.onload = function() {
         context.beginPath();
         for(let i = 0; i < 360; i++){
             let angle = i*Math.PI/180;
-            let pt=sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,angle,this.sineCount);
+
+            let diff = (this.ampBase - (this.ampBase / 100) * shapeSettings.ampPercentDrift) / 2;
+            let center = canvas.width / 2;
+            let delta = (center - mouseX) / (center / diff);
+
+            let pt=sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,delta,angle,this.sineCount);
             context.lineTo(pt.x,pt.y);
         }
         context.closePath();
@@ -112,10 +123,19 @@ window.onload = function() {
         canvas.height = canvasHeight;
     };
 
-    function sineCircleXYatAngle(cx,cy,radius,amplitude,angle,sineCount){
-        let x = cx+(radius+amplitude*Math.sin(sineCount*angle))*Math.cos(angle);
-        let y = cy+(radius+amplitude*Math.sin(sineCount*angle))*Math.sin(angle);
+    function sineCircleXYatAngle(cx,cy,radius,amplitude,delta,angle,sineCount){
+        let x = cx+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.cos(angle);
+        let y = cy+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.sin(angle);
         return({x:x,y:y});
+    }
+
+    function handleMouseMove(event) {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+    }
+
+    function randomAngle() {
+        return 360 * Math.random();
     }
 
     function randomDelta() {

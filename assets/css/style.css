@@ -9,6 +9,8 @@
 
     --nav-text-color: #b5c5cb;
     --nav-text-color-active: #909ca1;
+
+    --article-text-color: #6b7477;
 }
 
 body {
@@ -49,4 +51,11 @@ main article{
     margin-bottom: 2rem;
     border-radius: 0.5rem;
     box-shadow: 0 0.5rem 2rem rgba(181,197,203,0.1);
+}
+main article time{color: var(--nav-text-color);}
+main article p{color: var(--article-text-color);}
+main article a{
+    color: var(--particle-color-dark);
+    text-decoration: none;
+    font-weight: 400;
 }

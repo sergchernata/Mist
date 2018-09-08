@@ -3,7 +3,9 @@
 {{#foreach posts}}
     <article class="article_mist" role="article" itemscope itemtype="http://schema.org/Article">
         <header class="postheader_mist">
-            <time class="date_mist" datetime="{{date format="YYYY-MM-DD"}}" itemprop="datePublished">{{date format='dddd DD MMM YYYY'}}</time>
+            <time class="date_mist" datetime="{{date format="YYYY-MM-DD"}}" itemprop="datePublished">
+                {{date format='dddd DD MMM, YYYY'}}
+            </time>
             <h1 class="posttitle_uber" itemprop="headline">
                 <a href="{{{url}}}" rel="bookmark">{{title}}</a>
             </h1>

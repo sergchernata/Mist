@@ -26,7 +26,7 @@ aside{}
 aside h1{text-transform: uppercase; color: var(--nav-text-color);}
 aside h1 em{font-style: normal; display: block; font-weight: 200;}
 aside a{color: var(--nav-text-color); text-decoration: none; transition: all 0.5s ease-in;}
-aside a:hover, aside a.active{color: var(--nav-text-color-active); transition: all 0.5s ease-in;}
+aside a:hover, aside li.nav-current a{color: var(--nav-text-color-active); transition: all 0.5s ease-in;}
 aside ul{list-style: none; padding: 0; margin: 0;}
 
 main{}

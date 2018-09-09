@@ -34,13 +34,36 @@ aside{
 aside h1{text-transform: uppercase; color: var(--nav-text-color);}
 aside h1 em{font-style: normal; display: block; font-weight: 200; line-height: 1rem;}
 aside a{
+    position: relative;
     color: var(--nav-text-color);
     text-decoration: none;
-    transition: all 0.5s ease-in;
+    transition: all 0.2s ease-in;
     padding: 0.5rem 0;
-    display: block;
+    display: inline-block;
 }
-aside a:hover, aside li.nav-current a{color: var(--nav-text-color-active); transition: all 0.5s ease-in;}
+aside a:hover, aside li.nav-current a{
+    color: var(--nav-text-color-active);
+    transition: all 0.2s ease-in;
+}
+aside a:hover::after, aside li.nav-current a::after{
+    left: -1rem;
+    opacity: 1;
+    transition: all 0.2s ease-in;
+}
+aside a::after{
+    content: "";
+    position: absolute;
+    left: -2rem;
+    opacity: 0;
+    transition: all 0.2s ease-in;
+    display: block;
+    width: 6px;
+    height: 6px;
+    top: 50%;
+    background: #d088df;
+    border-radius: 3px;
+    transform: translateY(-50%);
+}
 aside ul{list-style: none; padding: 0; margin: 2rem 0 0 0;}
 
 main{padding-top: 8%;}

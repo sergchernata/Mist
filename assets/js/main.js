@@ -22,7 +22,7 @@ window.onload = function() {
         shapes = [],
         mouseX = 0,
         mouseY = 0,
-        i = 0;
+        rotationDelta = 0;
 
     window.onresize = resizeCanvas;
     document.onmousemove = handleMouseMove;
@@ -32,19 +32,24 @@ window.onload = function() {
     createShapes();
 
     setInterval(function() {
-        i++;
         // clear canvas
+        context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = bodyBgColor;
         context.fillRect(0, 0, canvas.width, canvas.height);
+
         // animate shape
         for (var i in shapes) {
-            shapes[i].draw(i);
+            shapes[i].draw(rotationDelta, i);
         }
+
         // animate particles
         for (var i in particles) {
             particles[i].draw();
         }
-    }, 60);
+
+        rotationDelta = rotationDelta == 1 ? 0 : rotationDelta + 0.001;
+
+    }, 30);
 
     function Particle() {
         this.fill = Math.random() > 0.5 ? particleColorDark : particleColorLight;
@@ -70,7 +75,6 @@ window.onload = function() {
         this.y = this.y < 0 ? 0 : this.y > canvas.height ? canvas.height : this.y;
 
         // clear canvas and draw particles
-        context.clearRect(particleSettings.leftWall, particleSettings.groundLevel, canvas.width, canvas.height);
         context.beginPath();
         context.fillStyle = this.fill;
         context.arc(this.x, this.y, this.size, 0, Math.PI*2, true);
@@ -88,16 +92,15 @@ window.onload = function() {
         this.lineColor = lineColor;
     }
 
-    Shape.prototype.draw = function(offset) {
+    Shape.prototype.draw = function(rotation, index) {
         context.beginPath();
         for(let i = 0; i < 360; i++){
             let angle = i*Math.PI/180;
-
+            let ownRotation = rotation + index * 0.5;
             let diff = (this.ampBase - (this.ampBase / 100) * shapeSettings.ampPercentDrift) / 2;
             let center = canvas.width / 2;
             let delta = (center - mouseX) / (center / diff);
-
-            let pt=sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,delta,angle,this.sineCount);
+            let pt=sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,delta,angle,this.sineCount,ownRotation);
             context.lineTo(pt.x,pt.y);
         }
         context.closePath();
@@ -123,9 +126,9 @@ window.onload = function() {
         canvas.height = canvasHeight;
     };
 
-    function sineCircleXYatAngle(cx,cy,radius,amplitude,delta,angle,sineCount){
-        let x = cx+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.cos(angle);
-        let y = cy+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.sin(angle);
+    function sineCircleXYatAngle(cx,cy,radius,amplitude,delta,angle,sineCount,rotation){
+        let x = cx+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.cos(angle+rotation);
+        let y = cy+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.sin(angle+rotation);
         return({x:x,y:y});
     }
 

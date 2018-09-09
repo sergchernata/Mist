@@ -6,21 +6,21 @@
             <time class="date_mist" datetime="{{date format="YYYY-MM-DD"}}" itemprop="datePublished">
                 {{date format='dddd DD MMM, YYYY'}}
             </time>
-            <h1 class="posttitle_uber" itemprop="headline">
+            <h1 class="posttitle_mist" itemprop="headline">
                 <a href="{{{url}}}" rel="bookmark">{{title}}</a>
             </h1>
         </header>
-        <div class="postcontent_uber" itemprop="articleBody">
-            {{content}}
+        <div class="postcontent_mist" itemprop="articleBody">
+            {{excerpt words="33"}}
         </div>
-        <div class="posttags_uber">
+        <div class="posttags_mist">
             {{#if tags}}
                 Tags: {{tags separator=" | "}}
             {{/if}}
         </div>
     </article>
 {{/foreach}}
-<div class="pagination_uber">
+<div class="pagination_mist">
     {{#if pagination}}
         {{{pagination}}}
     {{/if}}

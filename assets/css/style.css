@@ -50,12 +50,12 @@ main article{
     padding: 2rem;
     margin-bottom: 2rem;
     border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 2rem rgba(181,197,203,0.1);
+    box-shadow: 0 0.5rem 2rem rgba(181,197,203,0.25);
+    color: var(--article-text-color);
 }
 main article time{color: var(--nav-text-color);}
-main article p{color: var(--article-text-color);}
 main article a{
-    color: var(--particle-color-dark);
+    color: var(--nav-text-color-active);
     text-decoration: none;
     font-weight: 400;
 }

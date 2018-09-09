@@ -115,8 +115,12 @@ window.onload = function() {
     }
 
     function createShapes() {
-        shapes.push(new Shape(lineColorDark, 400, 12, 30));
-        shapes.push(new Shape(lineColorLight, 400, 8, 20));
+        for (let i = 0; i < 5; i++) {
+            shapes.push(new Shape("rgba(181, 197, 203, " + (1-(i*0.2)) + ")", 400+i*80, 12, 30));
+        }
+        for (let i = 0; i < 5; i++) {
+            shapes.push(new Shape("rgba(255, 255, 255, " + (1-(i*0.2)) + ")", 400+i*80, 8, 20));
+        }
     }
 
     function resizeCanvas() {

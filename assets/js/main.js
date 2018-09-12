@@ -39,7 +39,7 @@ window.onload = function() {
 
         // animate shape
         for (var i in shapes) {
-            shapes[i].draw(rotationDelta, i);
+            shapes[i].draw(rotationDelta);
         }
 
         // animate particles
@@ -82,7 +82,7 @@ window.onload = function() {
         context.fill();
     }
 
-    function Shape(lineColor,radius,amp,sineCount){
+    function Shape(lineColor,radius,amp,sineCount,index){
         this.x = 0;
         this.y = 100;
         this.radius = radius;
@@ -90,18 +90,21 @@ window.onload = function() {
         this.ampBase = amp;
         this.sineCount = sineCount;
         this.lineColor = lineColor;
+        this.rotationDelta = index * 0.01;
     }
 
-    Shape.prototype.draw = function(rotation, index) {
+    Shape.prototype.draw = function(rotation) {
         context.beginPath();
-        for(let i = 0; i < 360; i++){
+
+        let ownRotation = rotation - this.rotationDelta;
+        let diff = (this.ampBase - (this.ampBase / 100) * shapeSettings.ampPercentDrift) / 2;
+        let center = canvas.width / 2;
+        let delta = (center - mouseX) / (center / diff);
+
+        for(let i = 0; i < 360; i++) {
             let angle = i*Math.PI/180;
-            let ownRotation = rotation + index * 0.5;
-            let diff = (this.ampBase - (this.ampBase / 100) * shapeSettings.ampPercentDrift) / 2;
-            let center = canvas.width / 2;
-            let delta = (center - mouseX) / (center / diff);
-            let pt=sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,delta,angle,this.sineCount,ownRotation);
-            context.lineTo(pt.x,pt.y);
+            let point = sineCircleXYatAngle(this.x,this.y,this.radius,this.amp,delta,angle,this.sineCount,ownRotation);
+            context.lineTo(point.x,point.y);
         }
         context.closePath();
         context.strokeStyle = this.lineColor;
@@ -116,10 +119,10 @@ window.onload = function() {
 
     function createShapes() {
         for (let i = 0; i < 5; i++) {
-            shapes.push(new Shape("rgba(181, 197, 203, " + (1-(i*0.2)) + ")", 400+i*80, 12, 30));
+            shapes.push(new Shape("rgba(181, 197, 203, " + (1-(i*0.2)) + ")", 400+i*80, 12, 30, i));
         }
         for (let i = 0; i < 5; i++) {
-            shapes.push(new Shape("rgba(255, 255, 255, " + (1-(i*0.2)) + ")", 400+i*80, 8, 20));
+            shapes.push(new Shape("rgba(255, 255, 255, " + (1-(i*0.2)) + ")", 400+i*80, 8, 20, i));
         }
     }
 
@@ -130,9 +133,9 @@ window.onload = function() {
         canvas.height = canvasHeight;
     };
 
-    function sineCircleXYatAngle(cx,cy,radius,amplitude,delta,angle,sineCount,rotation){
-        let x = cx+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.cos(angle+rotation);
-        let y = cy+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.sin(angle+rotation);
+    function sineCircleXYatAngle(cx,cy,radius,amplitude,delta,angle,sineCount,ownRotation){
+        let x = cx+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.cos(angle+ownRotation);
+        let y = cy+(radius+(amplitude+delta)*Math.sin(sineCount*angle))*Math.sin(angle+ownRotation);
         return({x:x,y:y});
     }
 

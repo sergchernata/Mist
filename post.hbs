@@ -1,1 +1,44 @@
 {{!< default}}
+{{#post}}
+<article class="article_mist" role="article" itemscope itemtype="http://schema.org/Article">
+<header class="postheader_mist">
+<time class="date_mist" datetime="{{date format="YYYY-MM-DD"}}" itemprop="datePublished">{{date format='dddd DD MMM YYYY'}}</time>
+<h1 class="posttitle_mist" itemprop="headline">{{title}}</h1>
+</header>
+<div class="postcontent_mist" itemprop="articleBody">
+{{content}}
+</div>
+{{#if tags}}
+<div class="posttags_mist">
+Tags: {{tags separator=" | "}}
+</div>
+{{/if}}
+    <div class="sharepost_mist">
+    <h4 class="share_mist">Share this post: &nbsp;</h4>
+    <a class="share_mist icon-twitter" target="_blank" href="http://twitter.com/share?text={{title}}&url={{url absolute="true"}}"><span class="hidethis_mist">Twitter</span></a>
+    <a class="share_mist icon-facebook" target="_blank" href="http://www.facebook.com/sharer.php?u={{url absolute="true"}}"><span class="hidethis_mist">Facebook</span></a>
+    <a class="share_mist icon-gplus" target="_blank" href="https://plus.google.com/share?url={{url absolute="true"}}"><span class="hidethis_mist">Google+</span></a>
+    </div>
+        {{#if author}}
+        <footer class="postfooter_mist">
+        <address itemscope itemtype="http://schema.org/Person">
+        {{#if author.image}}
+        <div class="authorimage_mist"><img src="{{author.image}}" itemprop="image" /></div>
+        {{/if}}
+        <h4 class="authorname_mist"><span itemprop="author">{{author.name}}</span></h4>
+        {{#if author.website}}
+        <div class="authorwebsite_mist"><a href="{{author.website}}" itemprop="url">{{author.website}}</a></div>
+        {{/if}}
+        </address>
+        <div class="authorbio_mist">
+        <p>{{author.bio}}</p>
+        </div>
+        </footer>
+        {{/if}}
+</article>
+{{/post}}
+{{#if pagination}}
+<div class="pagination_mist">
+{{{pagination}}}
+</div>
+{{/if}}

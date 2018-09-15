@@ -22,8 +22,8 @@ Tags: {{tags separator=" | "}}
         {{#if author}}
         <footer class="postfooter_mist">
         <address itemscope itemtype="http://schema.org/Person">
-        {{#if author.image}}
-        <div class="authorimage_mist"><img src="{{author.image}}" itemprop="image" /></div>
+        {{#if primary_author.profile_image}}
+        <div class="authorimage_mist"><img src="{{primary_author.profile_image}}" itemprop="image" /></div>
         {{/if}}
         <h4 class="authorname_mist"><span itemprop="author">{{author.name}}</span></h4>
         {{#if author.website}}

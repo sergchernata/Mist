@@ -41,16 +41,12 @@ code{
 pre{
     white-space: pre-wrap;
     word-wrap: break-word;
-    padding: 10px 14px;
-    background: #333;
-    border-radius: 3px;
 }
 
-pre>code, pre>code:hover {
-    padding: 0;
-    background: inherit;
-    color: inherit;
+code.hljs {
+    padding: 1em 1.25em;
     border-radius: 0;
+    border-radius: 3px;
 }
 
 #animation {position: absolute; top: 0; left: 0; z-index: -10;}

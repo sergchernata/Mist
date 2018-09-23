@@ -112,6 +112,8 @@ main article a{
     font-weight: 400;
 }
 
+.pagination{color: #939fa4;}
+
 body.post-template main{padding: 0; width: 70%;}
 body.post-template article{border-radius: 0; width: 100%; box-shadow: none; padding: 8% 12rem;}
 .authorimage_mist img{width: 50px; height: auto; display: block;}
